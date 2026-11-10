@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11:11 | أمنية خاصة لـ نيجار</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c20, #1a102f, #2b092b);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            text-align: center;
+            position: relative;
+        }
+
+        /* خلفية النجوم المتساقطة */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: moveStar linear infinite;
+        }
+
+        @keyframes moveStar {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(100vh); opacity: 0; }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            max-width: 450px;
+            width: 90%;
+            z-index: 2;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .time-tag {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        h1 span {
+            color: #ff416c;
+        }
+
+        p.subtitle {
+            font-size: 1rem;
+            color: #ccc;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .heart-btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 65, 108, 0.3);
+            outline: none;
+        }
+
+        .heart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 25px rgba(255, 65, 108, 0.5);
+        }
+
+        .secret-message {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            border-right: 4px solid #ff416c;
+            display: none;
+            text-align: right;
+            animation: fadeIn 0.8s ease-in-out;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: #ff416c;
+            font-size: 20px;
+            pointer-events: none;
+            animation: floatUp 2s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars" id="starsContainer"></div>
+
+    <div class="card">
+        <div class="time-tag">11 : 11 ✨ Make A Wish</div>
+        <h1>إلى: <span>نيجار</span> 💖</h1>
+        <p class="subtitle">في تمام الساعة 11:11 وفي تاريخ 11/11، الكل بيتمنى أمنية.. وأنا أمنيتي كانت ديماً أنتِ.</p>
+
+        <button class="heart-btn" onclick="revealSecret(event)">اضغطي هنا لمعرفة السر 💌</button>
+
+        <div class="secret-message" id="secretMsg">
+            <p><strong>عزيزتي نيجار،</strong></p>
+            <p>بيقولوا إن الساعة لما بتيجي 11:11 بتكون أبواب الأماني مفتوحة.. بس الحقيقة إني مش محتاج أتمنى حاجة من الدنيا تاني، لأن وجودك فيها هو أجمل أمنية تحققت لي.</p>
+            <br>
+            <p style="text-align: center; color: #ff416c;">كل 11/11 وأنتِ في قلبي! 🌹</p>
+        </div>
+    </div>
+
+    <script>
+        // إخراج نجوم متساقطة بالخلفية
+        const starsContainer = document.getElementById('starsContainer');
+        for (let i = 0; i < 40; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // كشف الرسالة وإطلاق قلوب عند الضغط
+        function revealSecret(e) {
+            const msg = document.getElementById('secretMsg');
+            msg.style.display = 'block';
+
+            // إطلاق قلوب متطايرة عند مكان الضغط
+            for (let i = 0; i < 8; i++) {
+                createHeart(e.clientX, e.clientY);
+            }
+        }
+
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = (x + (Math.random() * 60 - 30)) + 'px';
+            heart.style.top = (y + (Math.random() * 60 - 30)) + 'px';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11:11 | أمنية خاصة لـ نيجار</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c20, #1a102f, #2b092b);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            text-align: center;
+            position: relative;
+        }
+
+        /* خلفية النجوم المتساقطة */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: moveStar linear infinite;
+        }
+
+        @keyframes moveStar {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(100vh); opacity: 0; }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            max-width: 450px;
+            width: 90%;
+            z-index: 2;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .time-tag {
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        h1 span {
+            color: #ff416c;
+        }
+
+        p.subtitle {
+            font-size: 1rem;
+            color: #ccc;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .heart-btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 65, 108, 0.3);
+            outline: none;
+        }
+
+        .heart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 25px rgba(255, 65, 108, 0.5);
+        }
+
+        .secret-message {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            border-right: 4px solid #ff416c;
+            display: none;
+            text-align: right;
+            animation: fadeIn 0.8s ease-in-out;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: #ff416c;
+            font-size: 20px;
+            pointer-events: none;
+            animation: floatUp 2s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars" id="starsContainer"></div>
+
+    <div class="card">
+        <div class="time-tag">11 : 11 ✨ Make A Wish</div>
+        <h1>إلى: <span>نيجار</span> 💖</h1>
+        <p class="subtitle">في تمام الساعة 11:11 وفي تاريخ 11/11، الكل بيتمنى أمنية.. وأنا أمنيتي كانت ديماً أنتِ.</p>
+
+        <button class="heart-btn" onclick="revealSecret(event)">اضغطي هنا لمعرفة السر 💌</button>
+
+        <div class="secret-message" id="secretMsg">
+            <p><strong>عزيزتي نيجار،</strong></p>
+            <p>بيقولوا إن الساعة لما بتيجي 11:11 بتكون أبواب الأماني مفتوحة.. بس الحقيقة إني مش محتاج أتمنى حاجة من الدنيا تاني، لأن وجودك فيها هو أجمل أمنية تحققت لي.</p>
+            <br>
+            <p style="text-align: center; color: #ff416c;">كل 11/11 وأنتِ في قلبي! 🌹</p>
+        </div>
+    </div>
+
+    <script>
+        // إخراج نجوم متساقطة بالخلفية
+        const starsContainer = document.getElementById('starsContainer');
+        for (let i = 0; i < 40; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // كشف الرسالة وإطلاق قلوب عند الضغط
+        function revealSecret(e) {
+            const msg = document.getElementById('secretMsg');
+            msg.style.display = 'block';
+
+            // إطلاق قلوب متطايرة عند مكان الضغط
+            for (let i = 0; i < 8; i++) {
+                createHeart(e.clientX, e.clientY);
+            }
+        }
+
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = (x + (Math.random() * 60 - 30)) + 'px';
+            heart.style.top = (y + (Math.random() * 60 - 30)) + 'px';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
